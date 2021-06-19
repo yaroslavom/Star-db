@@ -1,40 +1,63 @@
 import React, { Component } from "react";
-import ErrorIndicator from "../Error-indicator/Error-indicator";
-import ItemList from "../Item-list/Item-list";
-import PersonDetails from "../Person-details/Person-details";
-
+import ErrorIndicator from "../Error-indicator";
+import ItemList from "../Item-list";
+import PersonDetails from "../Person-details";
+import Row from "../Row";
 
 import "./People-page.css";
 
-export default class PeoplePage extends Component {
+class ErrorBoundry extends Component {
   state = {
-    selectedPerson: 3,
     hasError: false,
   };
 
   componentDidCatch() {
-      this.setState({hasError: true})
-  }
-
-  onPersonSelected = (id) => {
-    this.setState({
-      selectedPerson: id
-    })
+    this.setState({ hasError: true });
   }
 
   render() {
     if (this.state.hasError) {
-        return <ErrorIndicator/>
+      return <ErrorIndicator />;
     }
-    return (
-        <div className="row mb2">
-        <div className="col-md-6">
-          <ItemList onItemSelected={this.onPersonSelected}/>
-        </div>
-        <div className="col-md-6">
-          <PersonDetails personId={this.state.selectedPerson}/>
-        </div>
-      </div>
+
+    return this.props.children;
+  }
+}
+
+export default class PeoplePage extends Component {
+  state = {
+    selectedPerson: 3,
+  };
+
+  onPersonSelected = (id) => {
+    this.setState({
+      selectedPerson: id,
+    });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return <ErrorIndicator />;
+    }
+
+    const itemList = (
+      <ErrorBoundry>
+      <ItemList
+        onItemSelected={this.onPersonSelected}
+        getData={this.props.getData}
+        renderItems={({ name, gender, birthYear }) =>
+          `${name} (${gender}, ${birthYear})`
+        } //render pattern
+      />
+      </ErrorBoundry>
     );
+
+    const personDetails = (
+      <ErrorBoundry>
+        <PersonDetails personId={this.state.selectedPerson} />
+      </ErrorBoundry> //children pattern  
+    );
+
+    return <Row left={itemList} right={personDetails} />; //property pattern
   }
 }
