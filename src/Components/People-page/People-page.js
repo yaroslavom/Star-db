@@ -1,33 +1,28 @@
 import React, { Component } from "react";
 import ErrorIndicator from "../Error-indicator";
 import ItemList from "../Item-list";
-import PersonDetails from "../Person-details";
+import ItemDetails from "../Item-details";
 import Row from "../Row";
+import SwapiService from "../../Services/Swapi-service";
+import ErrorBoundry from "../Error-Boundry";
+import {
+  PersonDetails,
+  PlanetDetails,
+  StarshipDetails,
+  PersonList,
+  PlanetList,
+  StarshipList,
+} from "../Sw-components";
 
 import "./People-page.css";
-
-class ErrorBoundry extends Component {
-  state = {
-    hasError: false,
-  };
-
-  componentDidCatch() {
-    this.setState({ hasError: true });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <ErrorIndicator />;
-    }
-
-    return this.props.children;
-  }
-}
+import { Record } from "../Item-details/Item-details";
 
 export default class PeoplePage extends Component {
   state = {
-    selectedPerson: 3,
+    selectedPerson: 5,
   };
+
+  swapiService = new SwapiService();
 
   onPersonSelected = (id) => {
     this.setState({
@@ -39,25 +34,29 @@ export default class PeoplePage extends Component {
     if (this.state.hasError) {
       return <ErrorIndicator />;
     }
-
-    const itemList = (
+    // return <Row left={itemList} right={itemList} />; //property pattern
+    return (
       <ErrorBoundry>
-      <ItemList
-        onItemSelected={this.onPersonSelected}
-        getData={this.props.getData}
-        renderItems={({ name, gender, birthYear }) =>
-          `${name} (${gender}, ${birthYear})`
-        } //render pattern
-      />
+        <div className="stardb-app">
+          <Row
+            left={<PersonList>{({ name }) => <span>{name}</span>}</PersonList>}
+            right={<PersonDetails itemId={12} />}
+          />
+          <Row
+            left={<PlanetList>
+              { ({name}) => <span>{name}</span> }
+            </PlanetList> }
+            right={<PlanetDetails itemId={12}/>}
+          />
+          <Row
+            left={<StarshipList>
+              { ({name}) => <span>{name}</span> }
+            </StarshipList> }
+            right={<StarshipDetails itemId={12}/>}
+          />
+
+        </div>
       </ErrorBoundry>
     );
-
-    const personDetails = (
-      <ErrorBoundry>
-        <PersonDetails personId={this.state.selectedPerson} />
-      </ErrorBoundry> //children pattern  
-    );
-
-    return <Row left={itemList} right={personDetails} />; //property pattern
   }
 }
