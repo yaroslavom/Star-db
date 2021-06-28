@@ -50,7 +50,7 @@ export default class SwapiService {
     return this._transformStarship(starship)
   }
 
-  getStarshipsImage = ({id}) => {
+  getStarshipImage = ({id}) => {
     return `${this._apiImage}starships/${id}.jpg`
   }
 

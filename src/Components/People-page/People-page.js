@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import ErrorIndicator from "../Error-indicator";
-import ItemList from "../Item-list";
-import ItemDetails from "../Item-details";
 import Row from "../Row";
-import SwapiService from "../../Services/Swapi-service";
 import ErrorBoundry from "../Error-Boundry";
 import {
   PersonDetails,
@@ -15,14 +12,11 @@ import {
 } from "../Sw-components";
 
 import "./People-page.css";
-import { SwapiServiceProvider } from "../Swapi-service-context/Swapi-service-context";
 
 export default class PeoplePage extends Component {
   state = {
     selectedPerson: 5,
   };
-
-  swapiService = new SwapiService();
 
   onPersonSelected = (id) => {
     this.setState({
@@ -37,7 +31,6 @@ export default class PeoplePage extends Component {
   
     return (
       <ErrorBoundry>
-        <SwapiServiceProvider value={this.swapiService}>
           <div className="stardb-app">
             <Row
               left={
@@ -58,7 +51,6 @@ export default class PeoplePage extends Component {
               right={<StarshipDetails itemId={12} />}
             />
           </div>
-        </SwapiServiceProvider>
       </ErrorBoundry>
     );
   }
