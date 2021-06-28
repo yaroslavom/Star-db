@@ -15,7 +15,7 @@ import {
 } from "../Sw-components";
 
 import "./People-page.css";
-import { Record } from "../Item-details/Item-details";
+import { SwapiServiceProvider } from "../Swapi-service-context/Swapi-service-context";
 
 export default class PeoplePage extends Component {
   state = {
@@ -34,28 +34,31 @@ export default class PeoplePage extends Component {
     if (this.state.hasError) {
       return <ErrorIndicator />;
     }
-    // return <Row left={itemList} right={itemList} />; //property pattern
+  
     return (
       <ErrorBoundry>
-        <div className="stardb-app">
-          <Row
-            left={<PersonList>{({ name }) => <span>{name}</span>}</PersonList>}
-            right={<PersonDetails itemId={12} />}
-          />
-          <Row
-            left={<PlanetList>
-              { ({name}) => <span>{name}</span> }
-            </PlanetList> }
-            right={<PlanetDetails itemId={12}/>}
-          />
-          <Row
-            left={<StarshipList>
-              { ({name}) => <span>{name}</span> }
-            </StarshipList> }
-            right={<StarshipDetails itemId={12}/>}
-          />
-
-        </div>
+        <SwapiServiceProvider value={this.swapiService}>
+          <div className="stardb-app">
+            <Row
+              left={
+                <PersonList/>
+              }
+              right={<PersonDetails itemId={12} />}
+            />
+            <Row
+              left={
+                <PlanetList/>
+              }
+              right={<PlanetDetails itemId={12} />}
+            />
+            <Row
+              left={
+                <StarshipList/>
+              }
+              right={<StarshipDetails itemId={12} />}
+            />
+          </div>
+        </SwapiServiceProvider>
       </ErrorBoundry>
     );
   }
