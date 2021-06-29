@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types"
 import SwapiService from "../../Services/Swapi-service";
 import ErrorIndicator from "../Error-indicator/Error-indicator";
 import Spinner from "../Spinner";
@@ -11,16 +12,17 @@ export default class RandomPlanet extends Component {
   state = {
     planet: {},
     loading: true,
-    error: false
+    error: false,
   };
 
   componentDidMount() {
+    const { updateInterval } = this.props;
     this.updatePlanet();
-    const interval = setInterval(this.updatePlanet, 4000)
+    this.interval = setInterval(this.updatePlanet, updateInterval);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval)
+    clearInterval(this.interval);
   }
 
   onPlanetLoaded = (planet) => {
@@ -30,19 +32,30 @@ export default class RandomPlanet extends Component {
   onError = (err) => {
     this.setState({
       error: true,
-      loading: false
-    })
+      loading: false,
+    });
+  };
+
+  static defaultProps = {
+    updateInterval: 10000,
+  }; // static - for class, when u use a func - component.defaultProps behind func;
+
+  static propTypes = {
+    updateInterval: PropTypes.number
   }
 
   updatePlanet = () => {
     const id = Math.floor(Math.random() * 18) + 2;
-    this.swapiService.getPlanet(id).then(this.onPlanetLoaded).catch(this.onError);
-  }
+    this.swapiService
+      .getPlanet(id)
+      .then(this.onPlanetLoaded)
+      .catch(this.onError);
+  };
 
   render() {
     const { planet, loading, error } = this.state;
-    const hasData = !(loading || error)
-    const errorMessage = error ? <ErrorIndicator/> : null;
+    const hasData = !(loading || error);
+    const errorMessage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
     const content = hasData ? <PlanetView planet={planet} /> : null;
 

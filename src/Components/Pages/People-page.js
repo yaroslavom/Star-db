@@ -21,7 +21,7 @@ export default class PeoplePage extends Component {
     
     return (
       <ErrorBoundry>
-        <Row left={<PersonList  onItemSelected={this.onItemSelected}/>} right={<PersonDetails itemId={this.state.selectedItem} />} />
+        <Row left={<PersonList onItemSelected={this.onItemSelected}/>} right={<PersonDetails itemId={this.state.selectedItem} />} />
       </ErrorBoundry>
     );
   }

@@ -25,8 +25,6 @@ const mapStarshipMethodsToProps = (swapiService) => {
 
 const renderName = ({ name }) => <span>{name}</span>;
 
-//patern partially applied functions(from down to up): const add = (a) => (b) => a + b; ad(1)(2)
-
 const PersonList = compose(
   withSwapiService(mapPersonMethodsToProps),
   withData,
