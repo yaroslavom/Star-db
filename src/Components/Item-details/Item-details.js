@@ -56,6 +56,7 @@ export default class ItemDetails extends Component {
         <img
           className="item-image"
           src={image}
+          alt={name}
         />
 
         <div className="card-body">
