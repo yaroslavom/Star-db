@@ -8,6 +8,7 @@ import DummySwapiService from "../../Services/Dummy-swapi-service";
 import { SwapiServiceProvider } from "../Swapi-service-context/Swapi-service-context";
 import "./App.css";
 import { PeoplePage, PlanetPage, StarshipPage } from "../Pages";
+import { StarshipDetails } from "../Sw-components";
 
 export default class App extends Component {
   state = {
@@ -45,7 +46,8 @@ export default class App extends Component {
             <Route path="/" render={()=><h2>Welcome to Star DB</h2>} exact/>
             <Route path="/people" component={PeoplePage} />
             <Route path="/planets" component={PlanetPage} />
-            <Route path="/starships" component={StarshipPage} />
+            <Route path="/starships" exact component={StarshipPage} />
+            <Route path="/starships/:id" render={({match})=><StarshipDetails itemId={match.params.id}/>} />
           </Router>
         </SwapiServiceProvider>
       </div>
