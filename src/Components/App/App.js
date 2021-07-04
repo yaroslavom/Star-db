@@ -41,13 +41,19 @@ export default class App extends Component {
       <div className="stardb-app">
         <SwapiServiceProvider value={this.state.swapiService}>
           <Router>
-          <Header onServiceChange={this.onServiceChange} />
-          <RandomPlanet />
-            <Route path="/" render={()=><h2>Welcome to Star DB</h2>} exact/>
-            <Route path="/people" component={PeoplePage} />
-            <Route path="/planets" component={PlanetPage} />
+            <Header onServiceChange={this.onServiceChange} />
+            <RandomPlanet />
+            <Route path="/" render={() => <h2>Welcome to Star DB</h2>} exact />
+            <Route path="/people/:id?" component={PeoplePage} />
+            <Route path="/planets" component={PlanetPage} /> 
+            {/* ↑ Пример как работает код без переключения реакт роутера (данный код не хранит в себе выбранный id при обновлении страницы )*/}
             <Route path="/starships" exact component={StarshipPage} />
-            <Route path="/starships/:id" render={({match})=><StarshipDetails itemId={match.params.id}/>} />
+            <Route
+              path="/starships/:id"
+              render={({ match }) => (
+                <StarshipDetails itemId={match.params.id} />
+              )}
+            />
           </Router>
         </SwapiServiceProvider>
       </div>
