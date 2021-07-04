@@ -7,13 +7,14 @@ import SwapiService from "../../Services/Swapi-service";
 import DummySwapiService from "../../Services/Dummy-swapi-service";
 import { SwapiServiceProvider } from "../Swapi-service-context/Swapi-service-context";
 import "./App.css";
-import { PeoplePage, PlanetPage, StarshipPage } from "../Pages";
+import { PeoplePage, PlanetPage, StarshipPage, MeetPage, LoginPage } from "../Pages";
 import { StarshipDetails } from "../Sw-components";
 
 export default class App extends Component {
   state = {
     hasError: false,
     swapiService: new SwapiService(),
+    isLoggedIn: false
   };
 
   componentDidCatch() {
@@ -32,10 +33,16 @@ export default class App extends Component {
       };
     });
 
+    onLogin=()=> {
+      this.setState({isLoggedIn: true})
+    }
+
   render() {
     if (this.state.hasError) {
       return <ErrorIndicator />;
     }
+
+    const {isLoggedIn} = this.state
 
     return (
       <div className="stardb-app">
@@ -43,7 +50,7 @@ export default class App extends Component {
           <Router>
             <Header onServiceChange={this.onServiceChange} />
             <RandomPlanet />
-            <Route path="/" render={() => <h2>Welcome to Star DB</h2>} exact />
+            <Route path="/" render={() => <h2 className="text-center">Welcome to Star DB</h2>} exact />
             <Route path="/people/:id?" component={PeoplePage} />
             <Route path="/planets" component={PlanetPage} /> 
             {/* ↑ Пример как работает код без переключения реакт роутера (данный код не хранит в себе выбранный id при обновлении страницы )*/}
@@ -54,6 +61,8 @@ export default class App extends Component {
                 <StarshipDetails itemId={match.params.id} />
               )}
             />
+            <Route path="/meet" render={()=><MeetPage isLoggedIn={isLoggedIn}/>}/>
+            <Route path="/login" component={()=><LoginPage isLoggedIn={isLoggedIn} onLogin={this.onLogin}/>}/>
           </Router>
         </SwapiServiceProvider>
       </div>
