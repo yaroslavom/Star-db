@@ -1,6 +1,3 @@
+## [Live Site](https://star-wars-d-b.web.app/)
 
-
-In the project directory, you can run:
-
-### `npm start`
-
+![Portfolio Website](https://yaroslavom.com/source/star-wars-db.png)
